@@ -12,6 +12,5 @@ export class AppComponent {
 
   onPostAdded(post) {
     this.storedPosts.push(post);
-    alert ('I received ' + post);
   }
 }
