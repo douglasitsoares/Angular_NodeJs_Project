@@ -31,8 +31,12 @@ getPostUpdateListener(){
 addPost(title:string, content:string){
 
   const post : Post = {id:null, title:title, content:content}
-  this.posts.push(post); //This is to push a new post into the posts retrieved
-  this.postsUpdated.next ([...this.posts]);
+  this.http.post<{message:string}>('http://localhost:3000/api/posts',post)
+   .subscribe((responseData) => {
+     console.log(responseData);
+     this.posts.push(post); //This is to push a new post into the posts retrieved
+     this.postsUpdated.next ([...this.posts]);
+   });
 }
 
 }
