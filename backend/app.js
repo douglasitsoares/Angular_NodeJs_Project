@@ -37,30 +37,27 @@ app.post('/api/posts',(req, res, next) => {
   //console.log (post);
 
   post.save();
-
-
   res.status(201).json({
     message: 'Post added sucessfully'
   });
-
 });
 
-
 app.get ('/api/posts',(req, res, next) => {
-
+  /* Dummy Data
   const posts = [
 
     {id:'douglasSilva@', title:'Developer System', content:'System Analysis'},
     {id:'danielsousas@', title:'Bebe', content:'Gosta de brincar'}
   ];
-
-  res.status(200).json({
-    message : 'Posts is fetched as successfully!',
-    posts:posts
+  */
+  Post.find()
+  .then(documents =>{
+    res.status(200).json({
+      message : 'Posts is fetched as successfully!',
+      posts:documents
+    });
+    //console.log(documents);
   });
 });
-
-
-
 
 module.exports = app;
