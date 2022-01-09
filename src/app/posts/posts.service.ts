@@ -44,14 +44,14 @@ getPostUpdateListener(){
 addPost(title:string, content:string){
 
   const post : Post = {id:null, title:title, content:content}
-
-  this.http.post<{message:string}>('http://localhost:3000/api/posts',post)
-   .subscribe((responseData) => {
-
+    //responsible to get id from backend create and retrieved data
+    this.http.post<{message:string, postId: string}>('http://localhost:3000/api/posts',post)
+     .subscribe((responseData) => {
+    const newPostId = responseData.postId; // Retrieve from backend logical created
+    post.id = newPostId;
     this.posts.push(post); //This is to push a new post into the posts retrieved
     this.postsUpdated.next ([...this.posts]);
-
-
+    //console.dir(post.id);
    });
 }
 
