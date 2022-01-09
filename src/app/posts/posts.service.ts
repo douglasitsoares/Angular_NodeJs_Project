@@ -55,4 +55,16 @@ addPost(title:string, content:string){
    });
 }
 
+deletePost(postId:string){
+  this.http.delete('http://localhost:3000/api/posts/' + postId)
+  .subscribe(() =>{
+    const updatedPost = this.posts.filter(post => post.id !== postId);
+    //This is to be sure that delete a right post
+    this.posts = updatedPost;
+    this.postsUpdated.next([...this.posts]);
+
+  });
+
+}
+
 }
