@@ -3,6 +3,7 @@ const bodyParser = require ('body-parser');
 const mongoose = require ('mongoose');
 
 const Post = require ('./models/post');
+const { title } = require('process');
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use((req, res, next) =>{
    res.setHeader("Access-Control-Allow-Origin", "*");
    res.setHeader("Access-Control-Allow-Headers",
    "Origin, X-Request-With, Content-Type, Accept");
-   res.setHeader('Access-Control-Allow-Methods','GET, POST, DELETE, PATCH, OPTIONS');
+   res.setHeader('Access-Control-Allow-Methods','GET, POST, DELETE, PATCH, PUT, OPTIONS');
   // res.setHeader('Access-Control-Allow-Methods','DELETE');
    next();
 });
@@ -39,9 +40,22 @@ app.post('/api/posts',(req, res, next) => {
     res.status(201).json({
       postId: createdPost._id,
       message: 'Post added sucessfully'
-    });_
-
+    });
   });
+});
+
+app.put('/api/posts/:id', (req, res, next) =>{
+
+  const post = new Post({
+    _id: req.body.id,
+    title: req.body.title,
+    content: req.body.content
+  });
+
+   Post.updateOne({_id:req.params.id}, post).then(result =>{
+     console.dir(result);
+     res.status(200).json({message:'Post Updated'});
+   });
 });
 
 app.get ('/api/posts',(req, res, next) => {

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { Subject } from 'rxjs';
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 @Injectable({providedIn:'root'})
 export class PostsService{
@@ -41,6 +42,10 @@ getPostUpdateListener(){
   return this.postsUpdated.asObservable();
 }
 
+getPost(id: string){
+  return {...this.posts.find(p => p.id === id)};
+}
+
 addPost(title:string, content:string){
 
   const post : Post = {id:null, title:title, content:content}
@@ -54,6 +59,13 @@ addPost(title:string, content:string){
     //console.dir(post.id);
    });
 }
+
+updatePost(id: string, title: string, content:string){
+  const post: Post = { id:id, title:title, content:content};// change post and result of backend
+  this.http.put('http://localhost:3000/api/posts/'+id, post).subscribe(
+    response => console.dir(response));
+}
+
 
 deletePost(postId:string){
   this.http.delete('http://localhost:3000/api/posts/' + postId)
