@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { Subject } from 'rxjs';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn:'root'})
 export class PostsService{
@@ -12,7 +13,7 @@ export class PostsService{
 private posts: Post[] = [];
 private postsUpdated = new Subject<Post[]>();
 
-constructor(private http: HttpClient){}
+constructor(private http: HttpClient, private router:Router){}
 
 
 getPosts(){
@@ -56,6 +57,7 @@ addPost(title:string, content:string){
     post.id = newPostId;
     this.posts.push(post); //This is to push a new post into the posts retrieved
     this.postsUpdated.next ([...this.posts]);
+    this.router.navigate(["/"]);
     //console.dir(post.id);
    });
 }
@@ -69,6 +71,7 @@ updatePost(id: string, title: string, content:string){
       updatedPosts[oldPostIndex]=post;
       this.posts=updatedPosts;
       this.postsUpdated.next([...this.posts]);//accept observer
+      this.router.navigate(["/"]);
     });
 }
 
