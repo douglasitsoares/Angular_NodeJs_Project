@@ -7,6 +7,7 @@
 
 # dependencies
 /node_modules
+/MyVersion
 
 # IDEs and editors
 /.idea

@@ -4,7 +4,7 @@
     <mat-form-field>
       <input matInput
         type="text"
-        formControlName="title"
+        formControlName='title'
         placeholder="Post Title">
         <mat-error *ngIf="form.get('title').invalid">Please enter a post title !</mat-error>
     </mat-form-field>
@@ -16,7 +16,7 @@
     <mat-form-field>
       <textarea matInput
         rows="4"
-        formControlName="content"
+        formControlName='content'
         placeholder="Post Content">
         </textarea>
         <mat-error *ngIf="form.get('content').invalid">Please enter a content !</mat-error>
