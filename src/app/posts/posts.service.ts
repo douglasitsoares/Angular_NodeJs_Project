@@ -46,14 +46,22 @@ getPost(id: string){
   return this.http.get<{_id:string, title:string, content:string}>('http://localhost:3000/api/posts/'+id);
 }
 
-addPost(title:string, content:string){
+addPost(title:string, content:string, image:File){
 
-  const post : Post = {id:null, title:title, content:content}
+    const postData = new FormData();
+    postData.append('title', title);
+    postData.append('content', content);
+    postData.append('image', image, title);
+    //const post : Post = {id:null, title:title, content:content}
     //responsible to get id from backend create and retrieved data
-    this.http.post<{message:string, postId: string}>('http://localhost:3000/api/posts',post)
+    this.http.post<{message:string, post: Post}>('http://localhost:3000/api/posts',postData)
      .subscribe((responseData) => {
-    const newPostId = responseData.postId; // Retrieve from backend logical created
+    const post: Post = {id: responseData.post.id, title: title, content: content};
+    const newPostId = responseData.post.id; // Retrieve from backend logical created
     post.id = newPostId;
+
+    console.log (post.id);
+
     this.posts.push(post); //This is to push a new post into the posts retrieved
     this.postsUpdated.next ([...this.posts]);
     this.router.navigate(["/"]);
