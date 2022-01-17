@@ -1,26 +1,3 @@
-/* Manual listeners
-const http = require('http');
-
-const server = http.createServer((req, res) => {
-  res.end ('This is testing of http');
-})
-
-server.listen(process.env.PORT || 3000);
-
-//next
-const http = require('http');
-const app = require ('./backend/app');
-
-const port = process.env.PORT || 3000;
-
-app.set('port', port);
-
-const server = http.createServer(app);
-
-server.listen(port);
-
-*/
-
 const app = require("./backend/app");
 const debug = require("debug")("node-angular");
 const http = require("http");
@@ -45,7 +22,7 @@ const onError = error => {
   if (error.syscall !== "listen") {
     throw error;
   }
-  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
   switch (error.code) {
     case "EACCES":
       console.error(bind + " requires elevated privileges");
@@ -62,7 +39,7 @@ const onError = error => {
 
 const onListening = () => {
   const addr = server.address();
-  const bind = typeof port === "string" ? "pipe " + port : "port " + port;
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + port;
   debug("Listening on " + bind);
 };
 

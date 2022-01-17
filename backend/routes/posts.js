@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
       .split(" ")
       .join("-");
     const ext = MIME_TYPE_MAP[file.mimetype];
-    cb(null, name + "-" + Date.now() + "." + ext);
+    cb(null, name + "-" + Date.now() + "." + ext); // here renamed picture in case needed
   }
 });
 
@@ -44,20 +44,35 @@ router.post(
       res.status(201).json({
         message: "Post added successfully",
         post: {
-          ...createdPost,
-          id: createdPost._id
+          //...createdPost,
+          id: createdPost._id,
+          title: createdPost.title,
+          content: createdPost.content,
+          imagePath: createdPost.imagePath
         }
       });
+
     });
   }
 );
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", multer({ storage: storage }).single('image'),(req, res, next) => {
+
+  let imagePath = req.body.imagePath;
+
+  if (req.file){
+    const url = req.protocol + "://" + req.get("host");
+    imagePath = url + "/images/" + req.file.filename
+  }
+
   const post = new Post({
     _id: req.body.id,
     title: req.body.title,
-    content: req.body.content
+    content: req.body.content,
+    imagePath:imagePath
   });
+
+  console.log(post);
 
   Post.updateOne({ _id: req.params.id }, post).then(result => {
     res.status(200).json({ message: "Update successful!" });
