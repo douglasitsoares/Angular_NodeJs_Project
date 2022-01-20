@@ -17,6 +17,7 @@ import { AppComponent } from "./app.component";
 import { PostCreateComponent } from "./posts/post-create/post-create.component";
 import { HeaderComponent } from "./header/header.component";
 import { LoginComponent } from "./auth/login/Login.component";
+import { SignupComponent } from "./auth/signup/Signup.component";
 import { PostListComponent } from "./posts/post-list/post-list.component";
 import { AppRoutingModule } from "./app-routing.module";
 
@@ -26,7 +27,8 @@ import { AppRoutingModule } from "./app-routing.module";
     PostCreateComponent,
     HeaderComponent,
     PostListComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
