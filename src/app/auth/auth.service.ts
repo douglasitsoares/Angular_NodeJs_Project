@@ -7,6 +7,7 @@ import { AuthData } from "./auth-data.model";
 export class AuthService{
   private token: string;
   private authStatusListener = new Subject<boolean>();
+  private isAuthenticated = false;
 
   constructor( private http: HttpClient){}
 
@@ -17,6 +18,11 @@ export class AuthService{
   //This responsible to emmit information of token is authenticated or not
   getAuthStatusListener(){
     return this.authStatusListener.asObservable();
+  }
+
+  //This return if token and authenticated is valid
+  getIsAuth(){
+    return this.isAuthenticated;
   }
 
   createUser(email: string, password: string){
@@ -35,7 +41,10 @@ export class AuthService{
       const token = response.token;
       this.token = token;
       //this token was authenticated
-      this.authStatusListener.next(true);
+      if (token){
+        this.isAuthenticated = true;
+        this.authStatusListener.next(true);
+      }
     });
   }
 }
