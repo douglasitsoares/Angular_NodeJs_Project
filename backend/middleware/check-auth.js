@@ -1,4 +1,5 @@
 const jwt = require ("jsonwebtoken");
+const { decode } = require("punycode");
 
 module.exports = (req, res, next) => {
   try{
@@ -6,7 +7,8 @@ module.exports = (req, res, next) => {
       and jwt verify the right token is working or not by the type should be longer
   */
     const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, "secret_this_should_be_longer");
+    const decodedToken = jwt.verify(token, "secret_this_should_be_longer");
+    req.userData = { email: decodedToken.email, userId: decodedToken.userId };
     next();
   } catch(error){
       res.status(401).json({
