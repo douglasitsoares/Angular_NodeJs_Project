@@ -51,7 +51,8 @@ router.post(
           id: createdPost._id,
           title: createdPost.title,
           content: createdPost.content,
-          imagePath: createdPost.imagePath
+          imagePath: createdPost.imagePath,
+          creator: createdPost.userId
         }
       });
 
@@ -74,7 +75,8 @@ router.put("/:id",
     _id: req.body.id,
     title: req.body.title,
     content: req.body.content,
-    imagePath:imagePath
+    imagePath:imagePath,
+    creator: req.userData.userId
   });
 
   console.log(post);
