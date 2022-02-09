@@ -5,6 +5,7 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 import { PostsService } from "../posts.service";
 import { Post } from "../post.model";
 import { mimeType } from "./mime-type.validator";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-post-create",
@@ -18,10 +19,12 @@ export class PostCreateComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
   imagePreview: string;
+  userId: string;
   private mode = "create";
   private postId: string;
 
   constructor(
+    private authService: AuthService,
     public postsService: PostsService,
     public route: ActivatedRoute
   ) {}
@@ -37,6 +40,7 @@ export class PostCreateComponent implements OnInit {
         asyncValidators: [mimeType]
       })
     });
+    this.userId = this.authService.getUserId();
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has("postId")) {
         this.mode = "edit";
