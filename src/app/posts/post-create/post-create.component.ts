@@ -6,7 +6,7 @@ import { PostsService } from "../posts.service";
 import { Post } from "../post.model";
 import { mimeType } from "./mime-type.validator";
 import { AuthService } from "src/app/auth/auth.service";
-import { Subscription } from "rxjs";
+import { Subscription, throwError } from "rxjs";
 
 @Component({
   selector: "app-post-create",
@@ -108,12 +108,14 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.form.value.image
       );
     } else {
+
       this.postsService.updatePost(
         this.postId,
         this.form.value.title,
         this.form.value.content,
         this.form.value.image
       );
+
     }
     this.form.reset();
   }

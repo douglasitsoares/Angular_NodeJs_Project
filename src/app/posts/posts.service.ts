@@ -70,6 +70,7 @@ export class PostsService {
 
   updatePost(id: string, title: string, content: string, image: File | string) {
     let postData: Post | FormData;
+
     if (typeof image === "object") {
       postData = new FormData();
       postData.append("id", id);
@@ -90,7 +91,9 @@ export class PostsService {
       .subscribe(response => {
         this.router.navigate(["/"]);
       });
-  }
+
+
+}
 
   deletePost(postId: string) {
     return this.http
