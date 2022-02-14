@@ -56,6 +56,10 @@ router.post(
         }
       });
 
+    }).catch(error =>{
+        res.status(500).json({
+          message : "Created post is failed!"
+        });
     });
   }
 );
@@ -88,6 +92,10 @@ router.put("/:id",
       res.status(401).json({ message: "Authorization is failed" });
     }
 
+  }).catch(error => {
+    res.status(500).json({
+      message: "Couldn´t update post autentication failed or issues on the connection!"
+    });
   });
 });
 
@@ -114,6 +122,11 @@ if (pageSize && currentPage){
         maxPosts: count
 
     });
+  })
+  .catch(error => {
+    res.status(500).json({
+      message: "Fetching posts is failed!"
+    });
   });
 });
 
@@ -124,6 +137,11 @@ router.get("/:id", (req, res, next) => {
     } else {
       res.status(404).json({ message: "Post not found!" });
     }
+  })
+  .catch(error => {
+      res.status(500).json({
+        message: "Fetching post is failed !"
+      });
   });
 });
 
@@ -137,6 +155,11 @@ router.delete("/:id", checkAuth, (req, res, next) => {
       res.status(401).json({ message: "Deletion with error!" });
     }
 
+  })
+  .catch(error => {
+    res.status(500).json({
+      message: "Error on deletion postId"
+    });
   });
 });
 

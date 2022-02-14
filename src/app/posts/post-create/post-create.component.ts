@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ɵCodegenComponentFactoryResolver } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 
@@ -6,13 +6,14 @@ import { PostsService } from "../posts.service";
 import { Post } from "../post.model";
 import { mimeType } from "./mime-type.validator";
 import { AuthService } from "src/app/auth/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-post-create",
   templateUrl: "./post-create.component.html",
   styleUrls: ["./post-create.component.css"]
 })
-export class PostCreateComponent implements OnInit {
+export class PostCreateComponent implements OnInit, OnDestroy {
   enteredTitle = "";
   enteredContent = "";
   post: Post;
@@ -20,8 +21,10 @@ export class PostCreateComponent implements OnInit {
   form: FormGroup;
   imagePreview: string;
   userId: string;
+  infoPostId =false;
   private mode = "create";
   private postId: string;
+  private authStatusSub:Subscription;
 
   constructor(
     private authService: AuthService,
@@ -30,6 +33,10 @@ export class PostCreateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe( authStatus => {
+      this.isLoading = false;
+    });
+
     this.form = new FormGroup({
       title: new FormControl(null, {
         validators: [Validators.required, Validators.minLength(3)]
@@ -46,6 +53,7 @@ export class PostCreateComponent implements OnInit {
         this.mode = "edit";
         this.postId = paramMap.get("postId");
         this.isLoading = true;
+
         this.postsService.getPost(this.postId).subscribe(postData => {
           this.isLoading = false;
           this.post = {
@@ -55,6 +63,14 @@ export class PostCreateComponent implements OnInit {
             imagePath: postData.imagePath,
             creator: postData.creator
           };
+          // Checking if the post is responsible by user logged
+          if (this.userId === this.post.creator){
+            this.infoPostId = true;
+          }else{
+            this.infoPostId = false;
+          }
+
+
           this.form.setValue({
             title: this.post.title,
             content: this.post.content,
@@ -64,6 +80,7 @@ export class PostCreateComponent implements OnInit {
       } else {
         this.mode = "create";
         this.postId = null;
+        this.infoPostId = true;
       }
     });
   }
@@ -99,5 +116,9 @@ export class PostCreateComponent implements OnInit {
       );
     }
     this.form.reset();
+  }
+
+  ngOnDestroy(){
+      this.authStatusSub.unsubscribe();
   }
 }
