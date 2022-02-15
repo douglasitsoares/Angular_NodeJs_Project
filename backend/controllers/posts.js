@@ -43,13 +43,11 @@ exports.postUpdate = (req, res, next) => {
     creator: req.userData.userId
   });
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post).then(result => {
-    try{
-      if(result.nModified > 0){
+      if(result.n> 0){
         res.status(200).json({ message: "Update successful!" });
       }else{
         res.status(401).json({ message: "Authorization is failed nothing was changed"});
       }
-    } catch(error){return}
   }).catch(error => {
     res.status(500).json({
       message: "Couldn´t update post autentication failed or issues on the connection!"
