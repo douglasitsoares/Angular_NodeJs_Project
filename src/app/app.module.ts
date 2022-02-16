@@ -3,16 +3,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import {
-  MatInputModule,
-  MatCardModule,
-  MatButtonModule,
-  MatToolbarModule,
-  MatExpansionModule,
-  MatProgressSpinnerModule,
-  MatPaginatorModule,
-  MatDialogModule
-} from "@angular/material";
+
 
 import { AppComponent } from "./app.component";
 import { PostCreateComponent } from "./posts/post-create/post-create.component";
@@ -24,6 +15,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { ErrorInterceptor } from "./error-interceptor";
 import { ErrorComponent } from "./error/error.component";
+import { AngularMaterialModule } from "./angular-material.module";
 
 @NgModule({
   declarations: [
@@ -41,15 +33,8 @@ import { ErrorComponent } from "./error/error.component";
     ReactiveFormsModule,
     FormsModule,
     BrowserAnimationsModule,
-    MatInputModule,
-    MatCardModule,
-    MatButtonModule,
-    MatToolbarModule,
-    MatExpansionModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    MatDialogModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularMaterialModule
   ],
   providers: [{provide : HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true},
               {provide : HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true}],
